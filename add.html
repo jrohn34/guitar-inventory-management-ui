@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Guitar</title>
+    <script>
+        function addTheGuitar() {
+            let serialNumberNode = document.getElementById("serialNumber");
+            let serialNumber = serialNumberNode.value;
+            let priceNode = document.getElementById("price");
+            let price = priceNode.value;
+            let builderNode = document.getElementById("builder");
+            let builder = builderNode.value;
+            let modelNode = document.getElementById("model");
+            let model = modelNode.value;
+            let typeNode = document.getElementById("type");
+            let type = typeNode.value;
+            let backWoodNode = document.getElementById("backWood");
+            let backWood = backWoodNode.value;
+            let topWoodNode = document.getElementById("topWood");
+            let topWood = topWoodNode.value;
+
+            let guitar = {
+                serialNumber: serialNumber,
+                price: price,
+                builder: builder,
+                model: model,
+                type: type,
+                backWood: backWood,
+                topWood: topWood
+            };
+
+            alert("You entered: " + JSON.stringify(guitar));
+        }
+    </script>
+</head>
+<body>
+    <h1>Add a Guitar</h1>
+    <form id="addForm">
+        <label for="serialNumber">Serial Number:</label>
+        <input type="text" id="serialNumber" required><br>
+        
+        <label for="price">Price:</label>
+        <input type="text" id="price" required><br>
+        
+        <label for="builder">Builder:</label>
+        <input type="text" id="builder" required><br>
+        
+        <label for="model">Model:</label>
+        <input type="text" id="model" required><br>
+        
+        <label for="type">Type:</label>
+        <input type="text" id="type" required><br>
+        
+        <label for="backWood">Back Wood:</label>
+        <input type="text" id="backWood" required><br>
+        
+        <label for="topWood">Top Wood:</label>
+        <input type="text" id="topWood" required><br>
+        
+        <button type="button" onclick="addTheGuitar()">Add Guitar</button>
+    </form>
+</body>
+</html>
