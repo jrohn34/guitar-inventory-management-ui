@@ -27,52 +27,42 @@
     </table>
 
     <script>
-        let guitars = [
-            { serialNumber: "1", price: "1000", builder: "Fender", model: "Stratocaster", type: "Electric", backWood: "Alder", topWood: "Maple" },
-            { serialNumber: "2", price: "1500", builder: "Gibson", model: "Les Paul", type: "Electric", backWood: "Mahogany", topWood: "Maple" },
-            { serialNumber: "3", price: "800", builder: "Taylor", model: "814ce", type: "Acoustic", backWood: "Rosewood", topWood: "Spruce" },
-            { serialNumber: "4", price: "1200", builder: "Martin", model: "D-28", type: "Acoustic", backWood: "Rosewood", topWood: "Spruce" },
-            { serialNumber: "5", price: "700", builder: "Gretsch", model: "G5420T", type: "Electric", backWood: "Maple", topWood: "Maple" }
-        ];
-
         function search() {
             let guitarType = document.getElementById("type").value.toLowerCase();
+            if (!guitarType) {
+                alert("Please enter a guitar type to search.");
+                return;
+            }
+
             let table = document.getElementById("searchResult");
             table.innerHTML = "";
-            for (let guitar of guitars) {
-                if (!guitarType || guitar.type.toLowerCase() === guitarType) {
-                    let row = document.createElement("tr");
-                    let cell1 = document.createElement("td");                    
-                    let cell2 = document.createElement("td");
-                    let cell3 = document.createElement("td");
-                    let cell4 = document.createElement("td");
-                    let cell5 = document.createElement("td");
-                    let cell6 = document.createElement("td");
-                    let cell7 = document.createElement("td");
-                    let serialNumberNode = document.createTextNode(guitar.serialNumber);
-                    let priceNode = document.createTextNode(guitar.price);
-                    let builderNode = document.createTextNode(guitar.builder);
-                    let modelNode = document.createTextNode(guitar.model);
-                    let typeNode = document.createTextNode(guitar.type);
-                    let backWoodNode = document.createTextNode(guitar.backWood);
-                    let topWoodNode = document.createTextNode(guitar.topWood);
-                    cell1.appendChild(serialNumberNode);
-                    cell2.appendChild(priceNode);
-                    cell3.appendChild(builderNode);
-                    cell4.appendChild(modelNode);
-                    cell5.appendChild(typeNode);
-                    cell6.appendChild(backWoodNode);
-                    cell7.appendChild(topWoodNode);
-                    row.appendChild(cell1);
-                    row.appendChild(cell2);
-                    row.appendChild(cell3);
-                    row.appendChild(cell4);
-                    row.appendChild(cell5);
-                    row.appendChild(cell6);
-                    row.appendChild(cell7);
-                    table.appendChild(row);
+
+            fetch(`http://localhost:8080/search${guitarType}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    displaySearchResults(data.results);
+                } else {
+                    alert("Something went wrong while searching for guitars. Please try again or contact the customer support team.");
                 }
-            }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("Something went wrong while searching for guitars. Please try again or contact the customer support team.");
+            });
+        }
+
+        function displaySearchResults(results) {
+            let table = document.getElementById("searchResult");
+            results.forEach(guitar => {
+                let row = document.createElement("tr");
+                for (let key in guitar) {
+                    let cell = document.createElement("td");
+                    cell.textContent = guitar[key];
+                    row.appendChild(cell);
+                }
+                table.appendChild(row);
+            });
         }
     </script>
 </body>

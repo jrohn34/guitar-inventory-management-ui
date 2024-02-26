@@ -5,34 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Guitar</title>
     <script>
-        function addTheGuitar() {
-            let serialNumberNode = document.getElementById("serialNumber");
-            let serialNumber = serialNumberNode.value;
-            let priceNode = document.getElementById("price");
-            let price = priceNode.value;
-            let builderNode = document.getElementById("builder");
-            let builder = builderNode.value;
-            let modelNode = document.getElementById("model");
-            let model = modelNode.value;
-            let typeNode = document.getElementById("type");
-            let type = typeNode.value;
-            let backWoodNode = document.getElementById("backWood");
-            let backWood = backWoodNode.value;
-            let topWoodNode = document.getElementById("topWood");
-            let topWood = topWoodNode.value;
+function addTheGuitar() {
+    let serialNumber = document.getElementById("serialNumber").value;
+    let price = document.getElementById("price").value;
+    let builder = document.getElementById("builder").value;
+    let model = document.getElementById("model").value;
+    let type = document.getElementById("type").value;
+    let backWood = document.getElementById("backWood").value;
+    let topWood = document.getElementById("topWood").value;
 
-            let guitar = {
-                serialNumber: serialNumber,
-                price: price,
-                builder: builder,
-                model: model,
-                type: type,
-                backWood: backWood,
-                topWood: topWood
-            };
+    if (!serialNumber || !price || !builder || !model || !type || !backWood || !topWood) {
+        alert("Please enter a value for all fields.");
+        return;
+    }
 
-            alert("You entered: " + JSON.stringify(guitar));
+    fetch('http://localhost:8080/add', { 
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            serialNumber: serialNumber,
+            price: price,
+            builder: builder,
+            model: model,
+            type: type,
+            backWood: backWood,
+            topWood: topWood
+        }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert("The guitar was added to the system.");
+        } else {
+            alert("Something went wrong. Please try again or contact the customer support team.");
         }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert("Something went wrong. Please try again or contact the customer support team.");
+    });
+}
     </script>
 </head>
 <body>
